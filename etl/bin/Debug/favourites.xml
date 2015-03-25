@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<favourites>
+  <favourite name="conestoga_localhost">
+    <ip>127.0.0.1</ip>
+    <dms>MySQL</dms>
+    <username>root</username>
+    <password>Conestoga1</password>
+    <dbname>test</dbname>
+  </favourite>
+  <favourite name="gregs_hosting">
+    <ip>107.180.0.245</ip>
+    <dms>MySQL</dms>
+    <username>set_student</username>
+    <password>123456</password>
+    <dbname>ASQL-A3</dbname>
+  </favourite>
+</favourites>

@@ -1,0 +1,10 @@
+C:\Users\blorantfy-cc\Desktop\etl\etl\bin\Debug\etl.exe
+C:\Users\blorantfy-cc\Desktop\etl\etl\bin\Debug\etl.exe.config
+C:\Users\blorantfy-cc\Desktop\etl\etl\bin\Debug\MySql.Data.dll
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.ETLUtility.resources
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.Properties.Resources.resources
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.csproj.GenerateResource.Cache
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.exe
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.pdb
+C:\Users\blorantfy-cc\Desktop\etl\etl\bin\Debug\etl.pdb
+C:\Users\blorantfy-cc\Desktop\etl\etl\obj\Debug\etl.csprojResolveAssemblyReference.cache
