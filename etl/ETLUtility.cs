@@ -288,28 +288,45 @@ namespace etl
 
         private void beginTransfer_Click(object sender, EventArgs e)
         {
-            con = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");
+            /*con = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
+            local = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");*/
+            con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
+            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");
 
             con.Open();
+            mainProgressBar.Value = 10;
             local.Open();
+            mainProgressBar.Value = 20;
 
-            List<String> tables = GetTables(con, originalSchema);
-            List<String> localTables = GetTables(local, localSchema);
+            GetTables(con, originalSchema);
+            mainProgressBar.Value = 40;
+            GetTables(local, localSchema);
+            mainProgressBar.Value = 60;
 
             List<MyTable> missingTables = FindMissingTables(originalSchema, localSchema);
+            mainProgressBar.Value = 80;
             Dictionary<String, MyTable> missingColumns = FindMissingColumns(originalSchema, localSchema);
+            mainProgressBar.Value = 100;
 
             con.Close();
 
-            DisplayMissingTables(missingTables);
-            DisplayMissingColumns(missingColumns);
+            Changes changesWindow = new Changes(missingTables, missingColumns);
+            changesWindow.ShowDialog();
+            Boolean update = changesWindow.Apply;
+
+            if (update == true)
+            {
+                foreach (MyTable table in missingTables)
+                {
+                    AddTable(table, local);
+                }
+            }
+           
+            local.Close();
         }
 
-        private List<String> GetTables(OdbcConnection con, Dictionary<String, MyTable> schema)
+        private void GetTables(OdbcConnection con, Dictionary<String, MyTable> schema)
         {
-            List<String> retTables = new List<String>();
-
             DataTable tables = con.GetSchema("TABLES");
             DataTable columns = con.GetSchema("COLUMNS");
 
@@ -322,10 +339,8 @@ namespace etl
             foreach (DataRow row in columns.Rows)
             {
                 String tableName = row["TABLE_NAME"].ToString().ToLower();
-                schema[tableName].AddColumn(new MyColumn(row["COLUMN_NAME"].ToString(), row[5].ToString()));
+                schema[tableName].AddColumn(new MyColumn ( row["COLUMN_NAME"].ToString(), row[5].ToString(), row[6].ToString()));
             }
-
-            return retTables;
         }
 
         private List<MyTable> FindMissingTables(Dictionary<String, MyTable> original, Dictionary<String, MyTable> toCheck)
@@ -362,7 +377,7 @@ namespace etl
 
                         for (int i = 0; i < localColumns.Count && contains == false; i++)
                         {
-                            if (originalColumns[i].Equals(column) == true)
+                            if (localColumns[i].Equals(column) == true)
                             {
                                 contains = true;
                             }
@@ -379,43 +394,26 @@ namespace etl
             return missingColumns;
         }
 
-
-        private void DisplayMissingTables(List<MyTable> missingTables)
+        private void AddTable(MyTable table, OdbcConnection con)
         {
-            /*
-            listBox1.Items.Clear();
-
-            foreach (MyTable table in missingTables)
+            String sqlCommand = "CREATE TABLE " + table.Name + "(";
+           
+            foreach (MyColumn column in table.GetColumns())
             {
-                listBox1.Items.Add("*" + table.Name);
-
-                foreach (MyColumn column in table.GetColumns())
+                sqlCommand += column.Name + " " + column.Type;
+                if (column.Type.Equals("varchar") == true)
                 {
-                    listBox1.Items.Add("\t-" + column.Name + "(" + column.Type + ")");
+                    sqlCommand += " (" + column.Size + ")";
                 }
+                sqlCommand += ",";
             }
-            */
+
+            sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
+            sqlCommand += ");";
+
+            OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
+
+            cmd.ExecuteNonQuery();
         }
-
-        private void DisplayMissingColumns(Dictionary<String, MyTable> missingColumns)
-        {
-            /*
-            listBox2.Items.Clear();
-
-            foreach (KeyValuePair<String, MyTable> pair in missingColumns)
-            {
-                if (pair.Value.GetColumns().Count > 0)
-                {
-                    listBox2.Items.Add("*" + pair.Value.Name);
-
-                    foreach (MyColumn column in pair.Value.GetColumns())
-                    {
-                        listBox2.Items.Add("\t-" + column.Name + "(" + column.Type + ")");
-                    }
-                }
-            }
-            */
-        }
-
     }
 }
