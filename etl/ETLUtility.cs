@@ -127,7 +127,37 @@ namespace etl
             if(dms == "MySQL"){
                 driver = "MySQL ODBC 3.51 Driver";
             }else if(dms == "MSSQL"){
+				driver = "SQL Server";
+            }
 
+            bool valid = ip != "" && driver != "" && username != "" && password != "" && dbName != "";
+
+            if (valid)
+            {
+                conStr = "DRIVER={" + driver + "}; SERVER=" + ip + "; DATABASE=" + dbName + "; USER=" + username + "; PASSWORD=" + password + "; OPTION=0;";
+            }
+            else
+            {
+                conStr = null;
+            }
+
+            return conStr;
+        }
+
+        private string GetDestinationConStr()
+        {
+            string conStr = "";
+            string ip = txtDestinationIP.Text;
+            string dms = (cmbDestinationDMS.SelectedItem == null) ? "" : cmbDestinationDMS.SelectedItem.ToString();
+            string username = txtDestinationUsername.Text;
+            string password = txtDestinationPassword.Text;
+            string dbName = txtDestinationDBName.Text;
+            string driver = "";
+
+            if(dms == "MySQL"){
+                driver = "MySQL ODBC 3.51 Driver";
+            }else if(dms == "MSSQL"){
+            	driver = "SQL Server";
             }
 
             bool valid = ip != "" && driver != "" && username != "" && password != "" && dbName != "";
