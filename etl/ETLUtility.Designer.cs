@@ -41,8 +41,10 @@
             this.grpSource = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cmbSourceDMS = new System.Windows.Forms.ComboBox();
+            this.saveSource = new System.Windows.Forms.Button();
             this.grpDestination = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.saveDestination = new System.Windows.Forms.Button();
             this.cmbDestinationDMS = new System.Windows.Forms.ComboBox();
             this.txtDestinationIP = new System.Windows.Forms.TextBox();
             this.txtDestinationPassword = new System.Windows.Forms.TextBox();
@@ -57,12 +59,11 @@
             this.lstFavourites = new System.Windows.Forms.ListBox();
             this.grpFavourites = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.saveDestination = new System.Windows.Forms.Button();
-            this.saveSource = new System.Windows.Forms.Button();
             this.btnSetDestination = new System.Windows.Forms.Button();
             this.btnSetSource = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.beginTransfer = new System.Windows.Forms.Button();
+            this.mainProgressBar = new System.Windows.Forms.ProgressBar();
             this.grpSource.SuspendLayout();
             this.grpDestination.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -184,6 +185,16 @@
             this.cmbSourceDMS.Size = new System.Drawing.Size(146, 21);
             this.cmbSourceDMS.TabIndex = 1;
             // 
+            // saveSource
+            // 
+            this.saveSource.Location = new System.Drawing.Point(34, 171);
+            this.saveSource.Name = "saveSource";
+            this.saveSource.Size = new System.Drawing.Size(103, 32);
+            this.saveSource.TabIndex = 5;
+            this.saveSource.Text = "Save";
+            this.saveSource.UseVisualStyleBackColor = true;
+            this.saveSource.Click += new System.EventHandler(this.saveSource_Click);
+            // 
             // grpDestination
             // 
             this.grpDestination.Controls.Add(this.label10);
@@ -213,6 +224,16 @@
             this.label10.Size = new System.Drawing.Size(31, 13);
             this.label10.TabIndex = 12;
             this.label10.Text = "DMS";
+            // 
+            // saveDestination
+            // 
+            this.saveDestination.Location = new System.Drawing.Point(43, 171);
+            this.saveDestination.Name = "saveDestination";
+            this.saveDestination.Size = new System.Drawing.Size(103, 32);
+            this.saveDestination.TabIndex = 12;
+            this.saveDestination.Text = "Save";
+            this.saveDestination.UseVisualStyleBackColor = true;
+            this.saveDestination.Click += new System.EventHandler(this.saveDestination_Click);
             // 
             // cmbDestinationDMS
             // 
@@ -329,26 +350,6 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // saveDestination
-            // 
-            this.saveDestination.Location = new System.Drawing.Point(43, 171);
-            this.saveDestination.Name = "saveDestination";
-            this.saveDestination.Size = new System.Drawing.Size(103, 32);
-            this.saveDestination.TabIndex = 12;
-            this.saveDestination.Text = "Save";
-            this.saveDestination.UseVisualStyleBackColor = true;
-            this.saveDestination.Click += new System.EventHandler(this.saveDestination_Click);
-            // 
-            // saveSource
-            // 
-            this.saveSource.Location = new System.Drawing.Point(34, 171);
-            this.saveSource.Name = "saveSource";
-            this.saveSource.Size = new System.Drawing.Size(103, 32);
-            this.saveSource.TabIndex = 5;
-            this.saveSource.Text = "Save";
-            this.saveSource.UseVisualStyleBackColor = true;
-            this.saveSource.Click += new System.EventHandler(this.saveSource_Click);
-            // 
             // btnSetDestination
             // 
             this.btnSetDestination.Location = new System.Drawing.Point(167, 69);
@@ -371,6 +372,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.mainProgressBar);
             this.groupBox1.Controls.Add(this.beginTransfer);
             this.groupBox1.Location = new System.Drawing.Point(355, 270);
             this.groupBox1.Name = "groupBox1";
@@ -381,13 +383,20 @@
             // 
             // beginTransfer
             // 
-            this.beginTransfer.Location = new System.Drawing.Point(29, 31);
+            this.beginTransfer.Location = new System.Drawing.Point(91, 93);
             this.beginTransfer.Name = "beginTransfer";
-            this.beginTransfer.Size = new System.Drawing.Size(117, 32);
+            this.beginTransfer.Size = new System.Drawing.Size(120, 40);
             this.beginTransfer.TabIndex = 16;
             this.beginTransfer.Text = "Begin Transfer";
             this.beginTransfer.UseVisualStyleBackColor = true;
             this.beginTransfer.Click += new System.EventHandler(this.beginTransfer_Click);
+            // 
+            // mainProgressBar
+            // 
+            this.mainProgressBar.Location = new System.Drawing.Point(91, 139);
+            this.mainProgressBar.Name = "mainProgressBar";
+            this.mainProgressBar.Size = new System.Drawing.Size(120, 23);
+            this.mainProgressBar.TabIndex = 17;
             // 
             // ETLUtility
             // 
@@ -448,6 +457,7 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button beginTransfer;
+        private System.Windows.Forms.ProgressBar mainProgressBar;
     }
 }
 
