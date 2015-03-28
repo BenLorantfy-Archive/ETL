@@ -318,10 +318,14 @@ namespace etl
 
         private void beginTransfer_Click(object sender, EventArgs e)
         {
-            /*con = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");*/
-            con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");
+            String source = "DRIVER={" + cmbSourceDMS.Text + " ODBC " + odbcBox.Text + " Driver}; SERVER=" + txtSourceIP.Text + "; DATABASE=" + txtSourceDBName.Text + "; USER=" + txtSourceUsername.Text + "; PASSWORD=" + txtSourcePassword.Text + "; OPTIONS=0;";
+            String destination = "DRIVER={" + cmbDestinationDMS.Text + " ODBC " + odbcBox.Text + " Driver}; SERVER=" + txtDestinationIP.Text + "; DATABASE=" + txtDestinationDBName.Text + "; USER=" + txtDestinationUsername.Text + "; PASSWORD=" + txtDestinationPassword.Text + "; OPTIONS=0;";
+
+            con = new OdbcConnection(source);
+            local = new OdbcConnection(destination);
+
+            /*con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
+            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");*/
 
             con.Open();
             mainProgressBar.Value = 10;

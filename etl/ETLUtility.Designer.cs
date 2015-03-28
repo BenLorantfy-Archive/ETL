@@ -62,8 +62,10 @@
             this.btnSetDestination = new System.Windows.Forms.Button();
             this.btnSetSource = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.beginTransfer = new System.Windows.Forms.Button();
             this.mainProgressBar = new System.Windows.Forms.ProgressBar();
+            this.beginTransfer = new System.Windows.Forms.Button();
+            this.odbcBox = new System.Windows.Forms.TextBox();
+            this.odbcLabel = new System.Windows.Forms.Label();
             this.grpSource.SuspendLayout();
             this.grpDestination.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -219,7 +221,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(40, 62);
+            this.label10.Location = new System.Drawing.Point(40, 57);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(31, 13);
             this.label10.TabIndex = 12;
@@ -372,6 +374,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.odbcLabel);
+            this.groupBox1.Controls.Add(this.odbcBox);
             this.groupBox1.Controls.Add(this.mainProgressBar);
             this.groupBox1.Controls.Add(this.beginTransfer);
             this.groupBox1.Location = new System.Drawing.Point(355, 270);
@@ -380,6 +384,13 @@
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transfer";
+            // 
+            // mainProgressBar
+            // 
+            this.mainProgressBar.Location = new System.Drawing.Point(91, 139);
+            this.mainProgressBar.Name = "mainProgressBar";
+            this.mainProgressBar.Size = new System.Drawing.Size(120, 23);
+            this.mainProgressBar.TabIndex = 17;
             // 
             // beginTransfer
             // 
@@ -391,12 +402,22 @@
             this.beginTransfer.UseVisualStyleBackColor = true;
             this.beginTransfer.Click += new System.EventHandler(this.beginTransfer_Click);
             // 
-            // mainProgressBar
+            // odbcBox
             // 
-            this.mainProgressBar.Location = new System.Drawing.Point(91, 139);
-            this.mainProgressBar.Name = "mainProgressBar";
-            this.mainProgressBar.Size = new System.Drawing.Size(120, 23);
-            this.mainProgressBar.TabIndex = 17;
+            this.odbcBox.Location = new System.Drawing.Point(91, 58);
+            this.odbcBox.Name = "odbcBox";
+            this.odbcBox.Size = new System.Drawing.Size(120, 20);
+            this.odbcBox.TabIndex = 18;
+            this.odbcBox.Text = "5.3 ANSI";
+            // 
+            // odbcLabel
+            // 
+            this.odbcLabel.AutoSize = true;
+            this.odbcLabel.Location = new System.Drawing.Point(91, 31);
+            this.odbcLabel.Name = "odbcLabel";
+            this.odbcLabel.Size = new System.Drawing.Size(128, 13);
+            this.odbcLabel.TabIndex = 19;
+            this.odbcLabel.Text = "Enter ODBC drive version";
             // 
             // ETLUtility
             // 
@@ -417,6 +438,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.grpFavourites.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -458,6 +480,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button beginTransfer;
         private System.Windows.Forms.ProgressBar mainProgressBar;
+        private System.Windows.Forms.Label odbcLabel;
+        private System.Windows.Forms.TextBox odbcBox;
     }
 }
 
