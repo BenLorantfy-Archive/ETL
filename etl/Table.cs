@@ -10,6 +10,7 @@ namespace etl
     {
         public String Name { get; set; }
         private List<MyColumn> columns;
+        private List<MyRow> rows;
 
         public MyTable(String newName)
         {
@@ -22,9 +23,19 @@ namespace etl
             columns.Add(newColumn);
         }
 
+        public void AddRow(MyRow newRow)
+        {
+            rows.Add(newRow);
+        }
+
         public List<MyColumn> GetColumns()
         {
             return columns;
+        }
+
+        public List<MyRow> GetRows()
+        {
+            return rows;
         }
     }
 
@@ -57,6 +68,19 @@ namespace etl
 
             // Return true if the fields match:
             return (Name.Equals(p.Name)) && (Type.Equals(p.Type)) && (Size.Equals(p.Size));
+        }
+    }
+
+    public class MyRow
+    {
+        private Dictionary<String, String> rowFields = new Dictionary<String, String>(); 
+        public AddField(String name, String content)
+        {
+            rowFields.add(name,content);
+        }
+        public GetField(String name)
+        {
+            return rowFields[name];
         }
     }
 }

@@ -445,5 +445,51 @@ namespace etl
 
             cmd.ExecuteNonQuery();
         }
+
+        private void LoadTableData(MyTable table, OdbcConnection con){
+            String sqlCommand = "SELECT * FROM " + table.Name;
+
+            OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
+            OdbcDataReader DbReader = DbCommand.ExecuteReader();
+
+            while(DbReader.Read()) 
+            {
+                MyRow row = new MyRow();
+                for (int i = 0; i < DbReader.FieldCount; i++)
+                {
+                    row.add(DbReader.GetName(i),DbReader.GetString(i));
+                }
+                table.addRow(row);
+             }
+        }
+
+        private void InsertTableData(MyTable table, OdbcConnection con)
+        {
+            String sqlCommand = "INSERT INTO " + table.Name + "(";
+           
+            foreach (MyRow column in table.GetColumns())
+            {
+                sqlCommand += column.Name;
+                sqlCommand += ",";
+            }
+
+            sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
+            sqlCommand += ") VALUES (";
+
+            foreach (MyRow row in table.GetRows())
+            {
+                foreach (MyRow column in table.GetColumns())
+                {
+                    sqlCommand += row.GetField(column.Name) + ","
+                }
+                sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
+                sqlCommand += ");";
+                OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
+
+                cmd.ExecuteNonQuery();
+            }
+
+
+        }
     }
 }
