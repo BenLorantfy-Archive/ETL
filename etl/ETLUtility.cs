@@ -321,7 +321,7 @@ namespace etl
             /*con = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
             local = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");*/
             con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");
+            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");
 
             con.Open();
             mainProgressBar.Value = 10;
@@ -349,6 +349,10 @@ namespace etl
                 foreach (MyTable table in missingTables)
                 {
                     AddTable(table, local);
+                }
+                foreach (KeyValuePair<String, MyTable> pair in missingColumns)
+                {
+                    AddColumn(pair.Value, local);
                 }
             }
            
@@ -443,7 +447,62 @@ namespace etl
 
             OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
 
-            cmd.ExecuteNonQuery();
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            { }
+        }
+
+        private void AddColumn(MyTable table, OdbcConnection con)
+        {
+            String sqlCommand = "ALTER TABLE " + table.Name + " ";
+            MyTable currentTable = localSchema[table.Name];
+
+            foreach (MyColumn column in table.GetColumns())
+            {
+                Boolean exists = false;
+
+                for (int i = 0; i < currentTable.GetColumns().Count && exists == false; i++ )
+                {
+                    if (currentTable.GetColumns()[i].Name.Equals(column.Name) == true)
+                    {
+                        exists = true;
+                    }
+                }
+
+                if (exists == true)
+                {
+                    sqlCommand += "MODIFY " + column.Name + " " + column.Type;
+                    if (column.Type.Equals("varchar") == true)
+                    {
+                        sqlCommand += " (" + column.Size + ")";
+                    }
+                    sqlCommand += ",";
+                }
+                else
+                {
+                    sqlCommand += "ADD COLUMN " + column.Name + " " + column.Type;
+                    if (column.Type.Equals("varchar") == true)
+                    {
+                        sqlCommand += " (" + column.Size + ")";
+                    }
+                    sqlCommand += ",";
+                }
+            }
+
+            sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
+            sqlCommand += ";";
+
+            OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            { }
         }
 
         private void LoadTableData(MyTable table, OdbcConnection con){
