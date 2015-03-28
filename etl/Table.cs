@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * FILE         |   Table.cs
+ * PROJECT      |   ASQL Assignment #3
+ * DATE         |   27-03-2015
+ * AUTHOR       |   Greg Kozyrev & Ben Lorantfy
+ * DESCRIPTION  |   Purpose of this file is to create container for database data
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

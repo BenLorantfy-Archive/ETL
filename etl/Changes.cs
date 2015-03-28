@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * FILE         |   Changes.cs
+ * PROJECT      |   ASQL Assignment #3
+ * DATE         |   27-03-2015
+ * AUTHOR       |   Greg Kozyrev & Ben Lorantfy
+ * DESCRIPTION  |   Purpose of this file is to prompt user about changes and ask for permission.
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

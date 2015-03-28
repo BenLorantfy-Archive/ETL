@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * FILE         |   ETLUtility.cs
+ * PROJECT      |   ASQL Assignment #3
+ * DATE         |   27-03-2015
+ * AUTHOR       |   Greg Kozyrev & Ben Lorantfy
+ * DESCRIPTION  |   Purpose of this file is to collect all connection data, connect to databases
+ *              |   and copy all data.
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -323,9 +331,6 @@ namespace etl
 
             con = new OdbcConnection(source);
             local = new OdbcConnection(destination);
-
-            /*con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");*/
 
             con.Open();
             mainProgressBar.Value = 10;
