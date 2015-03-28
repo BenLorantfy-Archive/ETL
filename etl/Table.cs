@@ -74,11 +74,11 @@ namespace etl
     public class MyRow
     {
         private Dictionary<String, String> rowFields = new Dictionary<String, String>(); 
-        public AddField(String name, String content)
+        public void AddField(String name, String content)
         {
-            rowFields.add(name,content);
+            rowFields.Add(name,content);
         }
-        public GetField(String name)
+        public String GetField(String name)
         {
             return rowFields[name];
         }

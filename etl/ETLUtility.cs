@@ -321,7 +321,7 @@ namespace etl
             /*con = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
             local = new OdbcConnection("DRIVER={MySQL ODBC 3.51 Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");*/
             con = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=107.180.0.245; DATABASE=ASQL-A3; USER=set_student; PASSWORD=123456; OPTION=0;");
-            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Conestoga1; OPTION=0;");
+            local = new OdbcConnection("DRIVER={MySQL ODBC 5.3 ANSI Driver}; SERVER=127.0.0.1; DATABASE=test; USER=root; PASSWORD=Jratva-online1; OPTION=0;");
 
             con.Open();
             mainProgressBar.Value = 10;
@@ -509,16 +509,16 @@ namespace etl
             String sqlCommand = "SELECT * FROM " + table.Name;
 
             OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
-            OdbcDataReader DbReader = DbCommand.ExecuteReader();
+            OdbcDataReader DbReader = cmd.ExecuteReader();
 
             while(DbReader.Read()) 
             {
                 MyRow row = new MyRow();
                 for (int i = 0; i < DbReader.FieldCount; i++)
                 {
-                    row.add(DbReader.GetName(i),DbReader.GetString(i));
+                    row.AddField(DbReader.GetName(i),DbReader.GetString(i));
                 }
-                table.addRow(row);
+                table.AddRow(row);
              }
         }
 
@@ -526,7 +526,7 @@ namespace etl
         {
             String sqlCommand = "INSERT INTO " + table.Name + "(";
            
-            foreach (MyRow column in table.GetColumns())
+            foreach (MyColumn column in table.GetColumns())
             {
                 sqlCommand += column.Name;
                 sqlCommand += ",";
@@ -537,9 +537,9 @@ namespace etl
 
             foreach (MyRow row in table.GetRows())
             {
-                foreach (MyRow column in table.GetColumns())
+                foreach (MyColumn column in table.GetColumns())
                 {
-                    sqlCommand += row.GetField(column.Name) + ","
+                    sqlCommand += row.GetField(column.Name) + ",";
                 }
                 sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
                 sqlCommand += ");";
