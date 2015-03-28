@@ -16,6 +16,7 @@ namespace etl
         {
             Name = newName;
             columns = new List<MyColumn>();
+            rows = new List<MyRow>();
         }
 
         public void AddColumn(MyColumn newColumn)

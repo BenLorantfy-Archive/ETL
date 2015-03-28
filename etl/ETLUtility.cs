@@ -338,8 +338,6 @@ namespace etl
             Dictionary<String, MyTable> missingColumns = FindMissingColumns(originalSchema, localSchema);
             mainProgressBar.Value = 100;
 
-            con.Close();
-
             Changes changesWindow = new Changes(missingTables, missingColumns);
             changesWindow.ShowDialog();
             Boolean update = changesWindow.Apply;
@@ -354,8 +352,16 @@ namespace etl
                 {
                     AddColumn(pair.Value, local);
                 }
+
+                foreach (KeyValuePair<String, MyTable> pair in originalSchema)
+                {
+                    MyTable table = pair.Value;
+                    LoadTableData(table, con);
+                    InsertTableData(table, local);
+                }
             }
-           
+
+            con.Close();
             local.Close();
         }
 
@@ -366,13 +372,13 @@ namespace etl
 
             foreach (DataRow row in tables.Rows)
             {
-                String tableName = row["TABLE_NAME"].ToString().ToLower();
+                String tableName = row["TABLE_NAME"].ToString();
                 schema.Add(tableName, new MyTable(tableName));
             }
 
             foreach (DataRow row in columns.Rows)
             {
-                String tableName = row["TABLE_NAME"].ToString().ToLower();
+                String tableName = row["TABLE_NAME"].ToString();
                 schema[tableName].AddColumn(new MyColumn ( row["COLUMN_NAME"].ToString(), row[5].ToString(), row[6].ToString()));
             }
         }
@@ -383,7 +389,7 @@ namespace etl
 
             foreach (KeyValuePair<String, MyTable> pair in original)
             {
-                if (toCheck.ContainsKey(pair.Key) == false)
+                if (toCheck.ContainsKey(pair.Key.ToLower()) == false)
                 {
                     missingTables.Add(original[pair.Key]);
                 }
@@ -398,12 +404,12 @@ namespace etl
 
             foreach (KeyValuePair<String, MyTable> pair in original)
             {
-                if (toCheck.ContainsKey(pair.Key) == true)
+                if (toCheck.ContainsKey(pair.Key.ToLower()) == true)
                 {
                     missingColumns.Add(pair.Key, new MyTable(pair.Key));
 
                     List<MyColumn> originalColumns = pair.Value.GetColumns();
-                    List<MyColumn> localColumns = toCheck[pair.Key].GetColumns();
+                    List<MyColumn> localColumns = toCheck[pair.Key.ToLower()].GetColumns();
 
                     foreach (MyColumn column in originalColumns)
                     {
@@ -458,7 +464,7 @@ namespace etl
         private void AddColumn(MyTable table, OdbcConnection con)
         {
             String sqlCommand = "ALTER TABLE " + table.Name + " ";
-            MyTable currentTable = localSchema[table.Name];
+            MyTable currentTable = localSchema[table.Name.ToLower()];
 
             foreach (MyColumn column in table.GetColumns())
             {
@@ -506,7 +512,7 @@ namespace etl
         }
 
         private void LoadTableData(MyTable table, OdbcConnection con){
-            String sqlCommand = "SELECT * FROM " + table.Name;
+            String sqlCommand = "SELECT * FROM `" + table.Name +"`;";
 
             OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
             OdbcDataReader DbReader = cmd.ExecuteReader();
@@ -524,7 +530,7 @@ namespace etl
 
         private void InsertTableData(MyTable table, OdbcConnection con)
         {
-            String sqlCommand = "INSERT INTO " + table.Name + "(";
+            String sqlCommand = "INSERT INTO `" + table.Name + "`(";
            
             foreach (MyColumn column in table.GetColumns())
             {
@@ -539,13 +545,29 @@ namespace etl
             {
                 foreach (MyColumn column in table.GetColumns())
                 {
-                    sqlCommand += row.GetField(column.Name) + ",";
+                    if (column.Type.Equals("varchar") == true ||
+                        column.Type.Equals("date") == true ||
+                        column.Type.Equals("time") == true ||
+                        column.Type.Equals("datetime") == true)
+                    {
+                        sqlCommand += "\'" + row.GetField(column.Name) + "\'";
+                    }
+                    else
+                    {
+                        sqlCommand += row.GetField(column.Name);
+                    }
+                    sqlCommand += ",";
                 }
                 sqlCommand = sqlCommand.Substring(0, sqlCommand.Length - 1);
                 sqlCommand += ");";
                 OdbcCommand cmd = new OdbcCommand(sqlCommand, con);
 
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch(Exception e)
+                { }
             }
 
 
